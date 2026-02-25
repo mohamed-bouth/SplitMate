@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apartment_user', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->string('name');
+            $table->decimal('amount' , 9 , 2);
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apartment_user');
+        Schema::dropIfExists('expenses');
     }
 };
