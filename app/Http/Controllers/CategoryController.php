@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Apartment;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
@@ -12,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $user = auth()->user()->with('apartments.categories')->first();
+        $categories = $user->apartments->first()->categories;
+        return view('category.index' , compact('categories'));
     }
 
     /**
@@ -20,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -28,7 +32,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:20',
+        ]);
+
+        $apartment = auth()->user()->apartments()->first();
+
+        Category::create([
+            'name' => $request->name,
+            'apartment_id' => $apartment->id
+        ]);
+
+        return redirect(route('category.index'))->with(['success' => 'Category has seccesfuly created']);
+
     }
 
     /**
@@ -44,7 +60,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('category.edit' , compact('category'));
     }
 
     /**
@@ -52,7 +68,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:20'
+        ]);
+
+        $category->update([
+            'name' => $request->name
+        ]);
+
+        return redirect(route('category.index'))->with(['success' => 'Category has seccesfuly updated']);
     }
 
     /**
@@ -60,6 +84,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+
+        if($category->expenses()->exists()){
+            return redirect(route('category.index'))->with(['error' => 'Category can not delete !']);
+        }
+
+        $category->delete();
+        return redirect(route('category.index'))->with(['success' => 'Category has seccesfuly deleted']);
     }
 }

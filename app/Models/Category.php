@@ -14,12 +14,13 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'apartment_id'
 
     ];
 
     public function expenses()
     {
-        return $this->HasMany(Category::class);
+        return $this->HasMany(Expense::class);
     }
 
     public function apartments()

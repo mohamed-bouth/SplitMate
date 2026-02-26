@@ -15,13 +15,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @else
-                    <x-nav-link :href="route('apartment.index')" :active="request()->routeIs('room.*')" class="text-white hover:text-green-500 font-medium transition-colors">
-                        {{ __('Room') }}
+                    <x-nav-link :href="route('apartment.index')" :active="request()->routeIs('apartment.*')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('Apartment') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.*')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('Categories') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('expense.index')" :active="request()->routeIs('expense.*')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('Expenses') }}
                     </x-nav-link>
                     @endif
-                    <x-nav-link :href="route('expense')" :active="request()->routeIs('invoices.*')" class="text-white hover:text-green-500 font-medium transition-colors">
-                        {{ __('Invoices') }}
-                    </x-nav-link>
                 </div>
             </div>
 
