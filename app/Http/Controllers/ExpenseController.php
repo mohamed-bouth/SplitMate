@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
@@ -12,7 +13,12 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        return view('expense.index');
+        $expenses = Expense::with('user')->where('user_id', Auth()->id())
+        ->whereHas('category.apartment.users', function ($query) {
+            $query->where('users.id', Auth()->id());
+        })
+        ->get();
+        return view('expense.index' , compact('expenses'));
     }
 
     /**
@@ -20,7 +26,9 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        //
+        $user = auth()->user()->with('apartments.categories')->first();
+        $categories = $user->apartments->first()->categories;
+        return view('expense.create', compact('categories'));
     }
 
     /**
@@ -28,7 +36,20 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required|max:20',
+            'amount' => 'required|numeric',
+        ]);
+
+        Expense::create([
+            'name' => $request->name,
+            'amount' => $request->amount,
+            'category_id' => $request->category_id,
+            'user_id' => Auth()->id()
+        ]);
+
+        return redirect(route('expense.index'))->with(['success' => 'Expense has seccesfuly created']);
     }
 
     /**
@@ -44,7 +65,9 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        //
+        $user = auth()->user()->with('apartments.categories')->first();
+        $categories = $user->apartments->first()->categories;
+        return view('expense.edit' , compact('expense' , 'categories'));
     }
 
     /**
@@ -52,7 +75,18 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, Expense $expense)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:20',
+            'amount' => 'required|numeric',
+        ]);
+
+        $expense->update([
+            'name' => $request->name,
+            'amount' => $request->amount,
+            'category_id' => $request->category_id,
+        ]);
+
+        return redirect(route('expense.index'))->with(['success' => 'Expense has seccesfuly updated']);
     }
 
     /**
@@ -60,6 +94,7 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
+        return redirect(route('expense.index'))->with(['success' => 'Expense has seccesfuly deleted']);
     }
 }

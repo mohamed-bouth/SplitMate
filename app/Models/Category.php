@@ -23,7 +23,7 @@ class Category extends Model
         return $this->HasMany(Expense::class);
     }
 
-    public function apartments()
+    public function apartment()
     {
         return $this->belongsTo(Apartment::class);
     }

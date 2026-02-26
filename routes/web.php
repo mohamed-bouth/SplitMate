@@ -37,6 +37,11 @@ Route::middleware('auth' , 'verified')->group(function () {
 
 
     Route::get('/expense/index', [ExpenseController::class, 'index'])->name('expense.index');
+    Route::get('/expense/create', [ExpenseController::class, 'create'])->name('expense.create');
+    Route::post('/expense/store', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::get('/expense/edit/{expense}', [ExpenseController::class, 'edit'])->name('expense.edit');
+    Route::put('/expense/update/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::delete('/expense/destroy/{expense}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
 
     
 });

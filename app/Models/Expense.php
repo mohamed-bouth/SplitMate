@@ -11,7 +11,9 @@ class Expense extends Model
     //
     protected $fillable = [
         'name',
-        'amount'
+        'amount',
+        'category_id',
+        'user_id'
     ];
     
 
@@ -20,12 +22,12 @@ class Expense extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function categories()
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
