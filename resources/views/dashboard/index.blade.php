@@ -1,4 +1,6 @@
 <x-app-layout>
+    @if(auth()->user()->apartments()->exists())
+    @else
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     
     <div class="sm:mx-auto sm:w-full sm:max-w-3xl text-center mb-8">
@@ -17,9 +19,9 @@
                 <p class="text-white mb-8 flex-grow">
                     Create a new shared apartment, name it, and start inviting your roommates to easily organize and manage expenses.
                 </p>
-                <button class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition shadow-md">
+                <a href="{{ route('apartment.create') }}" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition shadow-md">
                     + Build a apartment now
-                </button>
+                </a>
             </div>
 
             <div class="bg-[#1e1f22] shadow-md py-10 px-6 shadow-lg rounded-2xl border-t-4 border-emerald-500 hover:shadow-xl transition flex flex-col items-center text-center">
@@ -43,4 +45,5 @@
         </div>
     </div>
 </div>
+@endif
 </x-app-layout>

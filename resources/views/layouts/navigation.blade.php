@@ -8,16 +8,17 @@
                         </div>
                     </a>
                 </div>
-
+                
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex h-full">
+                    @if(!auth()->user()->apartments()->exists())
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard.*')" class="text-white hover:text-green-500 font-medium transition-colors">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('apartment')" :active="request()->routeIs('room.*')" class="text-white hover:text-green-500 font-medium transition-colors">
+                    @else
+                    <x-nav-link :href="route('apartment.index')" :active="request()->routeIs('room.*')" class="text-white hover:text-green-500 font-medium transition-colors">
                         {{ __('Room') }}
                     </x-nav-link>
-
+                    @endif
                     <x-nav-link :href="route('expense')" :active="request()->routeIs('invoices.*')" class="text-white hover:text-green-500 font-medium transition-colors">
                         {{ __('Invoices') }}
                     </x-nav-link>

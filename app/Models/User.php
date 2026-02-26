@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class);
     }
+
+    public function hasApartment()
+    {
+        return $this->apartments()->exists();
+    }
 }

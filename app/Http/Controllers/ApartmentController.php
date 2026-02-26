@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ApartmentController extends Controller
 {
@@ -12,7 +13,8 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        //
+        $apartment = Auth()->user()->apartments()->with('users')->first();
+        return view('apartment.index' , compact('apartment'));
     }
 
     /**
@@ -20,7 +22,10 @@ class ApartmentController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth()->user()->hasApartment()){
+            abort(404);
+        }
+        return view('apartment.create');
     }
 
     /**
@@ -28,7 +33,22 @@ class ApartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255']
+        ]);
+
+        $apartment = Apartment::create([
+            'name' => $request->name,
+            'status' => 'active'
+        ]);
+
+        $apartment->users()->attach(auth()->id(), [
+            'role' => 'owner',
+            'status' => 'active',
+            'joined_at' => now(),
+        ]);
+
+        return redirect(route('apartment.index'));
     }
 
     /**
