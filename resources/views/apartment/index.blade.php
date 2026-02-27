@@ -8,6 +8,10 @@
             </div>
             <div>
                 <span class="px-4 py-2 bg-green-500/10 text-green-400 border border-green-500/20 rounded-lg text-sm font-bold">Apartment Status: {{ $apartment->status }}</span>
+                <form action="{{ route('apartment.leave') }}" method="post">
+                    @csrf
+                    <button class="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-sm font-bold">Leave Apartment</button>
+                </form>
             </div>
         </div>
 
@@ -127,7 +131,7 @@
                 <h3 class="font-bold text-lg text-white">👥 Apartment Member</h3>
                 <form class="flex gap-4" action="{{ route('invitation.store' , $apartment->id) }}" method="post">
                     @csrf
-                <input type="text" name="email" required autofocus autocomplete="username" 
+                <input type="text" name="email" required autocomplete="username" 
                    class="block bg-[#131416] border border-gray-800 rounded-xl text-white focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-1 placeholder-gray-600 shadow-sm outline-none" 
                    placeholder="name@example.com">
                 <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-indigo-900/20">Create Invitation</button>
@@ -152,7 +156,7 @@
                             @else
                             <td class="p-4 text-sm"><span class="bg-gray-700/50 text-gray-300 border border-gray-600/50 px-2.5 py-1 rounded-md text-xs font-bold">Member</span></td>
                             @endif
-                            <td class="p-4 font-bold text-green-500" dir="ltr">+5</td>
+                            <td class="p-4 font-bold text-green-500" dir="ltr">{{ $user->reputation }}</td>
                             <td class="p-4 text-center"><button class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1 rounded-md transition-colors text-sm font-bold">Kick 🚪</button></td>
                         </tr>
                         @endforeach

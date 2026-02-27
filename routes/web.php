@@ -21,6 +21,8 @@ Route::middleware('auth' , 'verified')->group(function () {
     Route::get('/apartment/index', [ApartmentController::class, 'index'])->name('apartment.index');
     Route::get('/apartment/create', [ApartmentController::class, 'create'])->name('apartment.create');
     Route::post('/apartment/store', [ApartmentController::class, 'store'])->name('apartment.store');
+    Route::get('/my-apartments', [ApartmentController::class, 'myApartments'])->name('apartments.my');
+    Route::post('/apartment/leave', [ApartmentController::class, 'leave'])->name('apartment.leave');
 
 
     Route::get('/category/index', [CategoryController::class, 'index'])->name('category.index');

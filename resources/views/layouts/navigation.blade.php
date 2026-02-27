@@ -27,6 +27,9 @@
                         {{ __('Expenses') }}
                     </x-nav-link>
                     @endif
+                    <x-nav-link :href="route('apartments.my')" :active="request()->routeIs('apartment.show')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('My Apartments') }}
+                    </x-nav-link>
                 </div>
             </div>
 

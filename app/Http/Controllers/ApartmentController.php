@@ -10,6 +10,8 @@ use App\Models\Expense;
 use App\Models\Transaction;
 use Illuminate\Container\Attributes\Auth;
 
+use function Symfony\Component\Clock\now;
+
 class ApartmentController extends Controller
 {
     /**
@@ -126,5 +128,23 @@ class ApartmentController extends Controller
     public function destroy(Apartment $apartment)
     {
         //
+    }
+
+    public function myApartments(){
+        $apartments = [];
+        return view('apartment.show' , compact('apartments'));
+    }
+
+    public function kick(){
+
+    }
+
+    public function leave(){
+        $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->first();
+        dd($apartment);
+        $apartment->update([
+            'status' => 'left',
+            'left_at' => now()
+        ]);
     }
 }
