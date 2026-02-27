@@ -14,7 +14,7 @@
             
             <div class="flex justify-between items-end mb-8 px-4 sm:px-0">
                 <div>
-                    <h2 class="text-3xl font-bold text-white tracking-tight">Categories 📂</h2>
+                    <h2 class="text-3xl font-bold text-white tracking-tight">Categories</h2>
                     <p class="text-gray-400 mt-2 text-sm">Manage your expense categories to keep everything organized.</p>
                 </div>
                 <a href="{{ route('category.create') }}" class="hidden sm:flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-green-900/20 transform hover:-translate-y-0.5">

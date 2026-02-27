@@ -20,7 +20,12 @@ class ApartmentController extends Controller
     public function index()
     {
 
-        $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->with('users')->first();
+        $apartment = Auth()->user()->apartments()
+            ->wherePivot('status', 'active')
+            ->with(['users' => function($query) {
+                $query->where('apartment_user.status', 'active');
+            }])
+            ->first();
         $apartmentId = $apartment->id;
 
         $totalExpenses = Expense::whereHas('category', function ($q) use ($apartmentId) {
@@ -131,7 +136,9 @@ class ApartmentController extends Controller
     }
 
     public function myApartments(){
-        $apartments = [];
+
+        $user = auth()->user();
+        $apartments = $user->apartments()->get();
         return view('apartment.show' , compact('apartments'));
     }
 
@@ -140,9 +147,16 @@ class ApartmentController extends Controller
     }
 
     public function leave(){
-        $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->first();
-        dd($apartment);
-        $apartment->update([
+
+        $user = auth()->user();
+        $apartment = $user->apartments()->wherePivot('status', 'active')->first();
+
+
+        if ($apartment->pivot->role == 'owner') {
+            return back()->with('error', 'You cant leave Apartment you are the owner');
+        }
+
+        $user->apartments()->updateExistingPivot($apartment->id , [
             'status' => 'left',
             'left_at' => now()
         ]);

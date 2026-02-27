@@ -1,10 +1,10 @@
 <x-app-layout>
 <div class="container mx-auto p-6 max-w-4xl">
     <div class="flex justify-between items-center mb-8">
-        <h2 class="text-2xl font-bold text-white">🏢 My Apartments</h2>
-        <a href="#" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition">
-            + Join New Apartment
-        </a>
+        <div>
+            <h2 class="text-3xl font-bold text-white tracking-tight">My Apartments</h2>
+            <p class="text-gray-400 mt-2 text-sm">See all your history of Apartments who you join</p>
+        </div>
     </div>
 
     <div class="grid gap-6">
@@ -22,14 +22,6 @@
                     </div>
 
                     <div class="flex gap-2">
-                        @if($apartment->pivot->status != 'active')
-                            <form action="#" method="POST">
-                                @csrf
-                                <button class="text-xs bg-[#131416] hover:bg-orange-500 text-gray-300 hover:text-white px-4 py-2 rounded-md border border-gray-700 transition">
-                                    Set as Active
-                                </button>
-                            </form>
-                        @endif
                         <a href="#" class="text-xs bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md border border-orange-500/20 transition">
                             View Expenses
                         </a>

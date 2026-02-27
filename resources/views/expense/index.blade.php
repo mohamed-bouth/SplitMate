@@ -4,7 +4,10 @@
         <div class="bg-[#1e1f22] rounded-xl shadow-md p-6 border-t-4 border-indigo-500">
             
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <h2 class="text-2xl font-bold text-white">🧾 Expenses log</h2>
+                <div>
+                    <h2 class="text-3xl font-bold text-white tracking-tight">Expenses</h2>
+                    <p class="text-gray-400 mt-2 text-sm">Manage your expense to keep everything organized.</p>
+                </div>
                 
                 <div class="flex flex-wrap items-center gap-4 w-full md:w-auto">
                     <form action="{{ route('expense.index') }}" method="GET" class="flex items-center gap-2 w-full md:w-auto">

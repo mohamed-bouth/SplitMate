@@ -13,9 +13,11 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $user = auth()->user()->with('apartments.categories')->first();
-        $categories = $user->apartments->first()->categories;
+    {    
+        $user = auth()->user();
+        $apartment = $user->apartments()->wherePivot('status', 'active')->first();
+        $categories = Category::where('apartment_id' , $apartment->id)->get();
+
         return view('category.index' , compact('categories'));
     }
 

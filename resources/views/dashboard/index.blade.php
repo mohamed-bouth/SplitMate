@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(auth()->user()->apartments()->exists())
+    @if(auth()->user()->apartments()->wherePivot('status', 'active')->exists())
     @else
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     

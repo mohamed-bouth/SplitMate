@@ -67,6 +67,6 @@ class User extends Authenticatable
 
     public function hasApartment()
     {
-        return $this->apartments()->exists();
+        return $this->apartments()->wherePivot('status', 'active')->exists();
     }
 }

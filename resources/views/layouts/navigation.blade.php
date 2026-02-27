@@ -10,7 +10,7 @@
                 </div>
                 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex h-full">
-                    @if(!auth()->user()->apartments()->exists())
+                    @if(!auth()->user()->apartments()->wherePivot('status', 'active')->exists())
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard.*')" class="text-white hover:text-green-500 font-medium transition-colors">
                         {{ __('Dashboard') }}
                     </x-nav-link>

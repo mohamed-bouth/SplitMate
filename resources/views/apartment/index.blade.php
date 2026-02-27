@@ -6,7 +6,7 @@
                 <h2 class="text-2xl font-bold text-white">🏠 Apartment: {{ $apartment->name }}</h2>
                 <p class="text-sm text-gray-400 mt-1">Owner: {{ $apartment->users->where('pivot.role', 'owner')->first()?->name }}</p>
             </div>
-            <div>
+            <div class='flex flex-col gap-2'>
                 <span class="px-4 py-2 bg-green-500/10 text-green-400 border border-green-500/20 rounded-lg text-sm font-bold">Apartment Status: {{ $apartment->status }}</span>
                 <form action="{{ route('apartment.leave') }}" method="post">
                     @csrf
@@ -151,13 +151,21 @@
                         @foreach( $apartment->users as $user )
                         <tr class="bg-[#131416] border-b border-gray-800 hover:bg-[#1e1f22] transition-colors">
                             <td class="p-4 font-semibold text-white">{{ $user->name }}</td>
-                            @if( $user->pivot->role == 'owner')
-                            <td class="p-4 text-sm"><span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-md text-xs font-bold">Owner</span></td>
+                            @if($user->pivot->status == 'left')
+                                <td class="p-4 text-sm"><span class="bg-gray-700/50 text-gray-300 border border-gray-600/50 px-2.5 py-1 rounded-md text-xs font-bold">left</span></td>
                             @else
-                            <td class="p-4 text-sm"><span class="bg-gray-700/50 text-gray-300 border border-gray-600/50 px-2.5 py-1 rounded-md text-xs font-bold">Member</span></td>
+                                @if( $user->pivot->role == 'owner')
+                                <td class="p-4 text-sm"><span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-md text-xs font-bold">Owner</span></td>
+                                @else
+                                <td class="p-4 text-sm"><span class="bg-gray-700/50 text-gray-300 border border-gray-600/50 px-2.5 py-1 rounded-md text-xs font-bold">Member</span></td>
+                                @endif
                             @endif
-                            <td class="p-4 font-bold text-green-500" dir="ltr">{{ $user->reputation }}</td>
-                            <td class="p-4 text-center"><button class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1 rounded-md transition-colors text-sm font-bold">Kick 🚪</button></td>
+                                <td class="p-4 font-bold text-green-500" dir="ltr">{{ $user->reputation }}</td>
+                                @if($user->pivot->role == 'member')
+                                <td class="p-4 text-center"><button class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1 rounded-md transition-colors text-sm font-bold">Kick</button></td>
+                                @else
+                                <td></td>
+                                @endif
                         </tr>
                         @endforeach
                     </tbody>

@@ -6,6 +6,7 @@ use App\Models\Expense;
 use App\Models\Transaction;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ExpenseController extends Controller
 {
@@ -27,8 +28,9 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        $user = auth()->user()->with('apartments.categories')->first();
-        $categories = $user->apartments->first()->categories;
+        $user = auth()->user();
+        $apartment = $user->apartments()->wherePivot('status', 'active')->first();
+        $categories = Category::where('apartment_id' , $apartment->id)->get();
         return view('expense.create', compact('categories'));
     }
 
