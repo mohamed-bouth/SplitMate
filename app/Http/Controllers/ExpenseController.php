@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use App\Models\Transaction;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = Expense::with('user')->where('user_id', Auth()->id())
+        $expenses = Expense::with('user')
         ->whereHas('category.apartment.users', function ($query) {
             $query->where('users.id', Auth()->id());
         })
@@ -37,17 +38,45 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
 
+
+
         $request->validate([
             'name' => 'required|max:20',
             'amount' => 'required|numeric',
         ]);
 
-        Expense::create([
+        $expense = Expense::create([
             'name' => $request->name,
             'amount' => $request->amount,
             'category_id' => $request->category_id,
             'user_id' => Auth()->id()
         ]);
+
+        $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->with('users')->first();
+
+        $userCount = $apartment->users->count('id');
+
+        $amountSend = $request->amount / $userCount;
+
+        $apartmentUsers = $apartment->users->where('id', '!=', auth()->id());
+
+        $expensesData = $apartmentUsers->map(function ($user) use ($amountSend, $apartment, $request , $expense) {
+            return [
+                'expense_id'   => $expense->id,
+                'apartment_id' => $apartment->id,
+                'debtor_id'    => auth()->id(),
+                'creditor_id'  => $user->id,
+                'amount'       => $amountSend,
+                'status'       => 'pending',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ];
+        });
+
+        Transaction::insert($expensesData->toArray());
+
+
+
 
         return redirect(route('expense.index'))->with(['success' => 'Expense has seccesfuly created']);
     }

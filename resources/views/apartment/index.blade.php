@@ -11,23 +11,62 @@
             </div>
         </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        
+        <div class="bg-[#1e1f22] rounded-2xl p-6 border border-gray-800 shadow-lg relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                <svg class="w-16 h-16 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-white text-sm font-medium mb-1">Total Expenses (All Time)</h3>
+                <p class="text-3xl font-black text-white tracking-tight">
+                    {{ number_format($totalExpenses, 2) }} <span class="text-indigo-500 text-lg">DH</span>
+                </p>
+                <div class="mt-4 flex items-center text-xs text-gray-500">
+                    <span class="flex items-center gap-1 bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded-md">
+                        🏠 Apartment Total
+                    </span>
+                </div>
+            </div>
+            <div class="absolute top-0 left-0 h-1 w-full bg-indigo-500"></div>
+        </div>
+
+        <div class="bg-[#1e1f22] rounded-2xl p-6 border border-gray-800 shadow-lg relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-white text-sm font-medium mb-1">This Month's Expenses</h3>
+                <p class="text-3xl font-black text-white tracking-tight">
+                    {{ number_format($monthlyExpenses, 2) }} <span class="text-green-500 text-lg">DH</span>
+                </p>
+                <div class="mt-4 flex items-center text-xs text-gray-500">
+                    <span class="flex items-center gap-1 bg-green-500/10 text-green-400 px-2 py-1 rounded-md">
+                        📅 {{ now()->format('F Y') }}
+                    </span>
+                </div>
+            </div>
+            <div class="absolute top-0 left-0 h-1 w-full bg-green-500"></div>
+        </div>
+
+    </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             
             <div class="bg-[#1e1f22] p-6 rounded-xl shadow-md border-t-4 border-blue-500">
                 <h3 class="font-bold text-lg mb-4 text-white">📊 Current balances</h3>
                 <div class="space-y-3">
+                    @foreach( $balances as $balanc )
                     <div class="bg-[#131416] flex justify-between items-center p-4 rounded-lg border border-gray-800 transition hover:border-gray-700">
-                        <span class="font-semibold text-gray-200">Yassin</span>
-                        <span class="text-green-500 font-bold" dir="ltr">+ 350.00 DH</span>
+                        <span class="font-semibold text-gray-200">{{ $balanc['user']->name }}</span>
+                        @if($balanc['balance'] > 0)
+                        <span class="text-green-500 font-bold" dir="ltr">+{{ $balanc['balance'] }} DH</span>
+                        @else
+                        <span class="text-red-500 font-bold" dir="ltr">{{ $balanc['balance'] }} DH</span>
+                        @endif
                     </div>
-                    <div class="bg-[#131416] flex justify-between items-center p-4 rounded-lg border border-gray-800 transition hover:border-gray-700">
-                        <span class="font-semibold text-gray-200">Mohamed</span>
-                        <span class="text-red-500 font-bold" dir="ltr">- 150.00 DH</span>
-                    </div>
-                    <div class="bg-[#131416] flex justify-between items-center p-4 rounded-lg border border-gray-800 transition hover:border-gray-700">
-                        <span class="font-semibold text-gray-200">karim</span>
-                        <span class="text-red-500 font-bold" dir="ltr">- 200.00 DH</span>
-                    </div>
+                        
+                    @endforeach
                 </div>
             </div>
 

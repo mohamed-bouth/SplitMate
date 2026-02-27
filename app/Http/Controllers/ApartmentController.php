@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Expense;
+use App\Models\Transaction;
+use Illuminate\Container\Attributes\Auth;
 
 class ApartmentController extends Controller
 {
@@ -13,8 +17,41 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        $apartment = Auth()->user()->apartments()->with('users')->first();
-        return view('apartment.index' , compact('apartment'));
+
+        $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->with('users')->first();
+        $apartmentId = $apartment->id;
+
+        $totalExpenses = Expense::whereHas('category', function ($q) use ($apartmentId) {
+            $q->where('apartment_id', $apartmentId);
+        })->sum('amount');
+
+        $pendingTransactions = Transaction::where('apartment_id', $apartmentId)
+            ->where('status', 'pending')
+            ->get();
+
+        $balances = $apartment->users->map(function ($user) use ($pendingTransactions) {
+
+
+            $owedToMe = $pendingTransactions->where('creditor_id', $user->id)->sum('amount');
+
+
+            $iOwe = $pendingTransactions->where('debtor_id', $user->id)->sum('amount');
+
+
+            $netBalance = $iOwe - $owedToMe;
+
+            return [
+                'user'       => $user,
+                'owed_to_me' => $owedToMe,
+                'i_owe'      => $iOwe,
+                'balance'    => round($netBalance, 2),
+
+            ];
+        });
+
+        $monthlyExpenses = 0;
+
+        return view('apartment.index', compact('monthlyExpenses', 'apartment', 'totalExpenses', 'balances'));
     }
 
     /**
@@ -22,7 +59,7 @@ class ApartmentController extends Controller
      */
     public function create()
     {
-        if(Auth()->user()->hasApartment()){
+        if (Auth()->user()->hasApartment()) {
             abort(404);
         }
         return view('apartment.create');

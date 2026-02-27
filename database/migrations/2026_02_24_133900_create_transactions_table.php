@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('expense_id')->references('id')->on('expenses');
             $table->foreignId('debtor_id')->references('id')->on('users');
             $table->foreignId('creditor_id')->references('id')->on('users');
+            $table->enum('status' , ['pending' , 'paid']);
             $table->decimal('amount' , 9 , 2);
             $table->timestamps();
         });
