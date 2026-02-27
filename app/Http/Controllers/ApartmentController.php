@@ -49,9 +49,17 @@ class ApartmentController extends Controller
             ];
         });
 
+        $transactions = Transaction::where(['apartment_id' => $apartmentId,
+                                            'status' => 'pending',
+                                            'creditor_id' => auth()->id()
+                                            ])->with('debtor' , 'creditor')->get();
+
+
         $monthlyExpenses = 0;
 
-        return view('apartment.index', compact('monthlyExpenses', 'apartment', 'totalExpenses', 'balances'));
+
+
+        return view('apartment.index', compact('monthlyExpenses', 'apartment', 'totalExpenses', 'balances' , 'transactions'));
     }
 
     /**

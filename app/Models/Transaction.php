@@ -9,19 +9,31 @@ use App\Models\Expense;
 
 class Transaction extends Model
 {
-    //
+    protected $fillable = [
+        'status'
+    ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function apartments()
+    public function creditor()
+    {
+        return $this->belongsTo(User::class , 'creditor_id');
+    }
+
+    public function debtor()
+    {
+        return $this->belongsTo(User::class , 'debtor_id');
+    }
+
+    public function apartment()
     {
         return $this->belongsTo(Apartment::class);
     }
 
-    public function expenses()
+    public function expense()
     {
         return $this->belongsTo(Expense::class);
     }

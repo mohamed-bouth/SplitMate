@@ -52,7 +52,11 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        $transaction->update([
+            'status' => 'paid'
+        ]);
+
+        return redirect(route('apartment.index'));
     }
 
     /**

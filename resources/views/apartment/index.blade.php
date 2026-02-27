@@ -73,24 +73,30 @@
             <div class="bg-[#1e1f22] p-6 rounded-xl shadow-md border-t-4 border-orange-500">
                 <h3 class="font-bold text-lg mb-4 text-white">🤝 Debt settlement</h3>
                 <div class="space-y-3">
+                    @forelse($transactions as $transaction)
                     <div class="flex justify-between items-center p-4 bg-[#131416] rounded-lg border border-orange-900/30">
                         <div class="text-sm">
-                            <span class="font-bold text-gray-200">Mohamed</span> <span class="text-gray-500"> owes to </span> <span class="font-bold text-gray-200">yassin</span>
+                            @if(auth()->id() == $transaction->creditor->id)
+                            <span class="font-bold text-gray-200">{{ $transaction->debtor->name }}</span> <span class="text-gray-500"> owes </span> <span class="font-bold text-gray-200">You</span>
+                            @else
+                            <span class="font-bold text-gray-200">{{ $transaction->debtor->name }}</span> <span class="text-gray-500"> owes to </span> <span class="font-bold text-gray-200">{{ $transaction->creditor->name }}</span>
+                            @endif
                         </div>
                         <div class="flex items-center gap-4">
-                            <span class="font-bold text-orange-400" dir="ltr">150.00 DH</span>
-                            <button class="text-xs bg-green-600/80 hover:bg-green-500 text-white px-3 py-1.5 rounded-md transition-colors font-medium">Payment made</button>
+                            <span class="font-bold text-orange-400" dir="ltr">{{ $transaction->amount }} DH</span>
+                            <form action="{{ route('transaction.paid' , $transaction->id) }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="text-xs bg-green-600/80 hover:bg-green-500 text-white px-3 py-1.5 rounded-md transition-colors font-medium">Payment made</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center p-4 bg-[#131416] rounded-lg border border-orange-900/30">
-                        <div class="text-sm">
-                            <span class="font-bold text-gray-200">karim</span> <span class="text-gray-500"> owes to </span> <span class="font-bold text-gray-200">yassin</span>
+                    @empty
+                        <div class="text-center p-8 bg-[#131416] rounded-lg border border-dashed border-gray-700">
+                            <div class="text-4xl mb-2">🎉</div>
+                            <p class="text-gray-400 text-sm italic">There No Transaction pending right now!</p>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <span class="font-bold text-orange-400" dir="ltr">200.00 DH</span>
-                            <button class="text-xs bg-green-600/80 hover:bg-green-500 text-white px-3 py-1.5 rounded-md transition-colors font-medium">Payment made</button>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>

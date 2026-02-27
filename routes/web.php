@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -43,7 +44,7 @@ Route::middleware('auth' , 'verified')->group(function () {
     Route::put('/expense/update/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::delete('/expense/destroy/{expense}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
 
-    
+    Route::put('/transaction/paid/{transaction}', [TransactionController::class, 'update'])->name('transaction.paid');
 });
 
 
