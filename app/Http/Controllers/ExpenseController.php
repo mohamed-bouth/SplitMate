@@ -56,11 +56,11 @@ class ExpenseController extends Controller
 
         $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->with('users')->first();
 
-        $userCount = $apartment->users->count('id');
+        $userCount = $apartment->users()->wherePivot('status', 'active')->count('users.id');
 
         $amountSend = $request->amount / $userCount;
 
-        $apartmentUsers = $apartment->users->where('id', '!=', auth()->id());
+        $apartmentUsers = $apartment->users()->where('users.id', '!=', auth()->id())->wherePivot('status', 'active')->get();
 
         $expensesData = $apartmentUsers->map(function ($user) use ($amountSend, $apartment, $request , $expense) {
             return [

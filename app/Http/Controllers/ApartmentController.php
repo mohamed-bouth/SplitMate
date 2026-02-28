@@ -149,16 +149,51 @@ class ApartmentController extends Controller
     public function leave(){
 
         $user = auth()->user();
-        $apartment = $user->apartments()->wherePivot('status', 'active')->first();
+        $apartment = $user->apartments()->wherePivot('status', 'active')->with('users')->first();
 
 
         if ($apartment->pivot->role == 'owner') {
-            return back()->with('error', 'You cant leave Apartment you are the owner');
+            return back()->with('error_leave', 'You cant leave Apartment you are the owner');
         }
 
         $user->apartments()->updateExistingPivot($apartment->id , [
             'status' => 'left',
             'left_at' => now()
         ]);
+        
+
+        $transactions = Transaction::where('creditor_id' , $user->id)->where('status' , 'pending')->get();
+
+        $transactionsCount = $transactions->sum('amount');
+
+        $owner = $apartment->users->where('pivot.role', 'owner')->first();
+
+        if($transactions == []){
+
+            $reputation = -1;
+
+            foreach ($transactions as $transaction) {
+                $transaction->update([
+                    'creditor_id' => $owner->id
+                ]);
+            }
+
+            $user->update([
+                'reputation' => $reputation + $user->reputation
+            ]);
+
+        }else {
+
+
+            $reputation = 5;
+
+            $user->update([
+                'reputation' => $reputation + $user->reputation
+            ]);
+        }
+
+        
+        return redirect(route('dashboard'));
+
     }
 }

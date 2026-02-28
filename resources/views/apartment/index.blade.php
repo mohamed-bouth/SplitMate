@@ -1,5 +1,12 @@
 <x-app-layout>
+
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+        @if(session('error_leave'))
+            <div class="mb-4 p-4 bg-[#1e1f22] border border-gray-400 rounded">
+                <p class="text-white">{{ session('error_leave') }}</p>
+            </div>
+        @endif
         
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1e1f22] p-6 rounded-xl shadow-md mb-6 border-r-4 border-indigo-500">
             <div class="mb-4 sm:mb-0">

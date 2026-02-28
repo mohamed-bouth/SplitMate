@@ -10,7 +10,8 @@ use App\Models\Expense;
 class Transaction extends Model
 {
     protected $fillable = [
-        'status'
+        'status',
+        'creditor_id'
     ];
 
     public function user()
