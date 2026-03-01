@@ -17,18 +17,21 @@
                     <h2 class="text-3xl font-bold text-white tracking-tight">Categories</h2>
                     <p class="text-gray-400 mt-2 text-sm">Manage your expense categories to keep everything organized.</p>
                 </div>
+                @owner($apartment)
                 <a href="{{ route('category.create') }}" class="hidden sm:flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-green-900/20 transform hover:-translate-y-0.5">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     New Category
                 </a>
+                @endowner
             </div>
-
+            @owner($apartment)
             <div class="sm:hidden mb-6 px-4">
                 <a href="{{ route('category.create') }}" class="flex justify-center items-center gap-2 w-full bg-green-500 text-white px-5 py-3 rounded-xl font-bold shadow-lg shadow-green-900/20">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     New Category
                 </a>
             </div>
+            @endowner
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-0">
                 
@@ -67,9 +70,11 @@
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">No categories found</h3>
                     <p class="text-gray-500 mb-6 text-center max-w-sm">You haven't added any categories yet. Create one to start tracking your expenses properly.</p>
+                    @owner($apartment)
                     <a href="{{ route('category.create') }}" class="px-6 py-3 bg-green-500 hover:bg-green-400 text-white font-bold rounded-xl transition-all shadow-lg shadow-green-900/20">
                         Create First Category
                     </a>
+                    @endowner
                 </div>
                 @endforelse
 

@@ -134,6 +134,7 @@
         @endif
 
         <div class="bg-[#1e1f22] p-6 rounded-xl shadow-md border-t-4 border-purple-500">
+            @owner($apartment)
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-lg text-white">👥 Apartment Member</h3>
                 <form class="flex gap-4" action="{{ route('invitation.store' , $apartment->id) }}" method="post">
@@ -144,6 +145,7 @@
                 <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-indigo-900/20">Create Invitation</button>
                 </form>
             </div>
+            @endowner
             <div class="overflow-x-auto rounded-lg border border-gray-800">
                 <table class="w-full text-right border-collapse">
                     <thead class="bg-[#0f1011] text-gray-400 text-sm border-b border-gray-800">
@@ -169,7 +171,11 @@
                             @endif
                                 <td class="p-4 font-bold text-green-500" dir="ltr">{{ $user->reputation }}</td>
                                 @if($user->pivot->role == 'member')
+                                @owner($apartment)
                                 <td class="p-4 text-center"><button class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1 rounded-md transition-colors text-sm font-bold">Kick</button></td>
+                                @else
+                                <td></td>
+                                @endowner
                                 @else
                                 <td></td>
                                 @endif

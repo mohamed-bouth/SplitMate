@@ -50,10 +50,10 @@
                                 </td>
                                 <td class="px-6 py-4 text-gray-500 text-sm">{{ $user->created_at->format('M d, Y') }}</td>
                                 <td class="px-6 py-4 text-right">
-                                    @if($user->id !== auth()->id()) {{-- ما يقدرش الأدمن يباني راسو --}}
+                                    @if($user->id !== auth()->id())
                                         <form action="{{ route('admin.users.toggle-ban', $user->id) }}" method="POST">
                                             @csrf
-                                            @if($user->is_banned)
+                                            @if($user->is_active == 0)
                                                 <button type="submit" class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold py-2 px-4 rounded-xl transition-all shadow-lg shadow-green-900/20">
                                                     Unban User
                                                 </button>
@@ -86,5 +86,4 @@
 
         </div>
     </div>
-</div>
 </x-app-layout>

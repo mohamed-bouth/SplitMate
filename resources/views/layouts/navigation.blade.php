@@ -30,6 +30,14 @@
                     <x-nav-link :href="route('apartments.my')" :active="request()->routeIs('apartment.show')" class="text-white hover:text-green-500 font-medium transition-colors">
                         {{ __('My Apartments') }}
                     </x-nav-link>
+                    @admin
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('Statistics') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')" class="text-white hover:text-green-500 font-medium transition-colors">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    @endadmin
                 </div>
             </div>
 

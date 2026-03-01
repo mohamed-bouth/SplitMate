@@ -76,9 +76,6 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="p-4 bg-[#131416]/50 text-center">
-                    <a href="#" class="text-sm text-gray-500 hover:text-white transition-colors font-medium">View all registered users →</a>
-                </div>
             </div>
 
         </div>

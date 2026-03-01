@@ -15,10 +15,13 @@ class CategoryController extends Controller
     public function index()
     {    
         $user = auth()->user();
-        $apartment = $user->apartments()->wherePivot('status', 'active')->first();
+        $apartment = $user->apartments()->wherePivot('status', 'active')
+        ->with(['users' => function($query) {
+            $query->where('apartment_user.status', 'active');
+        }])->first();
         $categories = Category::where('apartment_id' , $apartment->id)->get();
 
-        return view('category.index' , compact('categories'));
+        return view('category.index' , compact('categories' , 'apartment'));
     }
 
     /**
