@@ -19,7 +19,6 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-
         $apartment = Auth()->user()->apartments()
             ->wherePivot('status', 'active')
             ->with(['users' => function($query) {

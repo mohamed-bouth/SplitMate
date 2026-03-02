@@ -10,7 +10,7 @@ class EnsureIsApartmentOwner
 {
     public function handle(Request $request, Closure $next): Response
 {
-    $apartment = $request->route('apartment'); 
+    $apartment = Auth()->user()->apartments()->wherePivot('status', 'active')->with('users')->first();
 
     if ($apartment) {
         $isActiveOwner = $apartment->users()

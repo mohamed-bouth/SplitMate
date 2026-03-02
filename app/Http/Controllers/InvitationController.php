@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Nette\Utils\Random;
 use App\Models\Apartment;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvitationMail;
 
 class InvitationController extends Controller
 {
@@ -58,6 +60,9 @@ class InvitationController extends Controller
         ]);
 
         $url = 'http://127.0.0.1:8000/invitation/' . $invitation->token;
+
+        Mail::to($invitation->email)
+        ->send(new InvitationMail($invitation));
 
         return redirect()->back()->with(['token' => $invitation->token , 'url' => $url]);
 
