@@ -36,5 +36,5 @@ Follow these steps to get your local development environment running:
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/splitmate.git](https://github.com/your-username/splitmate.git)
+   git clone https://github.com/mohamed-bouth/SplitMate.git
    cd splitmate
